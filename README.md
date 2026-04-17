@@ -1,7 +1,7 @@
 # 長照交通服務平台 (LTC Transport System)
 
 > 多機構長照交通派車管理平台  
-> 版本：1.1.0 · 最後更新：2026-04-17
+> 版本：1.2.0 · 最後更新：2026-04-17
 
 ---
 
@@ -131,6 +131,10 @@ Vue 3 Composition API (<script setup>)
 - Bootstrap 5 + Bootstrap Icons
 - Axios（API 呼叫，含 401 自動重導）
 - RWD：侧欄 offcanvas（行動版漢堡選單）
+- **PWA 離線模組（駕駛專用）**
+  - `vite-plugin-pwa` + Workbox Service Worker
+  - Dexie.js IndexedDB（任務快取 + 操作佇列）
+  - 斷網時離線操作，重連後自動同步
 
 ---
 
@@ -196,10 +200,18 @@ WAWA/
 │   │   │   ├── AppLayout.vue         主版面（側欄 + 頂列）
 │   │   │   ├── AppSidebar.vue        側欄導覽（含角色過濾）
 │   │   │   ├── AppTopbar.vue         頂列（角色 badge + 登出）
+│   │   │   ├── OfflineBanner.vue     離線狀態橫幅 + Toast（駕駛專用）
 │   │   │   └── StatusBadge.vue       狀態標籤元件
+│   │   ├── composables/
+│   │   │   └── useDriverTasks.js     駕駛任務 Composable（含離線支援）
+│   │   ├── db/
+│   │   │   └── offlineDb.js          Dexie IndexedDB（tasks / pendingActions / syncMeta）
 │   │   ├── router/index.js           路由設定 + 角色守衛
-│   │   ├── stores/auth.js            Pinia 認證 Store
+│   │   ├── stores/
+│   │   │   ├── auth.js               Pinia 認證 Store
+│   │   │   └── offline.js            Pinia 離線狀態 Store（網路偵測 + 佇列同步）
 │   │   └── views/                    13 個頁面元件
+│   ├── public/icons/                 PWA 圖示（192×192, 512×512 SVG）
 │   └── package.json
 │
 ├── .gitignore

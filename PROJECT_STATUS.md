@@ -1,5 +1,5 @@
 # 長照交通服務平台 — 專案功能與開發進度
-> 版本：1.1.0 · 最後更新：2026-04-17
+> 版本：1.2.0 · 最後更新：2026-04-17
 
 ---
 
@@ -122,7 +122,7 @@
 | 任務指派 | /assignments | system_admin, fleet_admin | 待指派/已指派分區、駕駛車輛選擇 |
 | 駕駛管理 | /drivers | system_admin, fleet_admin | 駕照/健康證明到期警示 |
 | 車輛管理 | /vehicles | system_admin, fleet_admin | 保險/定檢到期警示 |
-| 今日任務 | /tasks | driver | 今日任務列表，日期顯示 |
+| 今日任務 | /tasks | driver | 今日任務列表，離線快取，狀態更新佇列，GPS 打卡 |
 | 服務紀錄 | /service-records | 全角色 | 唯讀列表（依角色隔離） |
 | 長照機構 | /care-units | system_admin, org_admin | CRUD（org_admin 唯讀自己） |
 | 車行管理 | /companies | system_admin, fleet_admin | CRUD（fleet_admin 唯讀自己） |
@@ -130,10 +130,21 @@
 
 #### 共用元件
 - [x] StatusBadge.vue — 訂車狀態彩色標籤（待指派/已指派/進行中/已完成/取消）
-- [x] AppLayout.vue — 主版面框架（sidebar + topbar + main）
+- [x] AppLayout.vue — 主版面框架（sidebar + topbar + main），含 OfflineBanner（僅駕駛角色）
 - [x] AppSidebar.vue — 側欄（依角色過濾連結，desktop 固定 / mobile offcanvas）
 - [x] AppTopbar.vue — 頂列（角色 badge + 使用者名稱 + 登出按鈕）
+- [x] OfflineBanner.vue — 離線/同步狀態橫幅 + Teleport Toast（僅駕駛角色）
 - [x] ExpiryBadge（DriversView/VehiclesView 內聯）— 到期日顏色警示
+
+#### 駕駛離線模組（PWA）
+- [x] vite-plugin-pwa + Workbox Service Worker（靜態資源 CacheFirst，API NetworkFirst）
+- [x] Dexie.js IndexedDB — 三張資料表：tasks（任務快取）/ pendingActions（操作佇列）/ syncMeta
+- [x] useDriverTasks composable — 線上從 API 載入並存快取；離線從 IndexedDB 讀取
+- [x] useOfflineStore Pinia store — navigator.onLine 監聽，重連時自動 flush 佇列
+- [x] GPS 打卡（5 秒 timeout，失敗不阻斷流程）
+- [x] 待同步任務顯示琥珀色邊框 + 「待同步」badge
+- [x] Toast 通知（成功/警告/錯誤，4 秒自動消失）
+- [x] PWA manifest + SVG 圖示（192×192 / 512×512）
 
 ---
 
@@ -201,6 +212,15 @@ system_logs           操作稽核紀錄
 - Git 初始化，144 個檔案，27,265 行
 - 推送至 GitHub：https://github.com/evachuang0519/WAWA
 
+### ✅ 第五階段：駕駛端 PWA 離線模組（2026-04-17 完成）
+- Service Worker（vite-plugin-pwa + Workbox）安裝並通過 build
+- Dexie IndexedDB 三層快取架構建立
+- 駕駛任務頁完整離線支援（載入快取 + 狀態佇列 + 自動同步）
+- 修復 `recurring_templates` 資料表缺失（DB schema 補建）
+- 修復 Vue `onUnmounted` 在 async hook 後呼叫的生命週期警告
+- 所有 10 支 API 端點驗證通過（HTTP 200）
+- 所有 13 個前端頁面驗證通過（含 4 種角色隔離）
+
 ---
 
 ## 七、技術債 / 待辦事項
@@ -242,6 +262,8 @@ system_logs           操作稽核紀錄
 | 設定值重啟後重置 | 中 | 待處理（global.__appSettings 為記憶體） |
 | LINE OAuth 本機需 ngrok | 低 | 待處理 |
 | routes 資料表未使用 | 低 | 保留，固定路線功能未開發 |
+| ~~recurring_templates 資料表缺失~~ | ~~高~~ | ✅ 已修復（2026-04-17） |
+| ~~Vue onUnmounted 生命週期警告~~ | ~~低~~ | ✅ 已修復（2026-04-17） |
 
 ---
 
