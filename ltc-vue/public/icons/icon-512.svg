@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#1e293b"/>
+  <rect x="80" y="120" width="352" height="240" rx="32" fill="#3b82f6"/>
+  <rect x="100" y="144" width="312" height="152" rx="16" fill="#1e40af"/>
+  <!-- windows -->
+  <rect x="120" y="160" width="80" height="56" rx="10" fill="#93c5fd"/>
+  <rect x="216" y="160" width="80" height="56" rx="10" fill="#93c5fd"/>
+  <rect x="312" y="160" width="68" height="56" rx="10" fill="#93c5fd"/>
+  <!-- door -->
+  <rect x="120" y="232" width="64" height="64" rx="8" fill="#1e40af"/>
+  <rect x="328" y="232" width="64" height="64" rx="8" fill="#1e40af"/>
+  <!-- wheels -->
+  <circle cx="168" cy="392" r="48" fill="#334155"/>
+  <circle cx="168" cy="392" r="24" fill="#94a3b8"/>
+  <circle cx="344" cy="392" r="48" fill="#334155"/>
+  <circle cx="344" cy="392" r="24" fill="#94a3b8"/>
+  <!-- bumper -->
+  <rect x="72" y="344" width="368" height="28" rx="14" fill="#475569"/>
+  <!-- plus sign -->
+  <rect x="396" y="48" width="72" height="22" rx="11" fill="#22c55e"/>
+  <rect x="418" y="26" width="22" height="66" rx="11" fill="#22c55e"/>
+</svg>

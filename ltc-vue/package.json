@@ -12,7 +12,9 @@
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "dexie": "^4.4.2",
     "pinia": "^2.1.7",
+    "vite-plugin-pwa": "^1.2.0",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },

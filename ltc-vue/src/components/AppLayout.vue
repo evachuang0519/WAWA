@@ -29,6 +29,8 @@
     <!-- Main area -->
     <div class="d-flex flex-column flex-grow-1 overflow-hidden">
       <AppTopbar />
+      <!-- 離線橫幅：僅駕駛角色顯示（OfflineBanner 內部已有 v-if 判斷） -->
+      <OfflineBanner v-if="auth.user?.role === 'driver'" />
       <main class="main-content p-3 p-md-4 flex-grow-1">
         <router-view />
       </main>
@@ -39,7 +41,11 @@
 <script setup>
 import AppSidebar from './AppSidebar.vue'
 import AppTopbar from './AppTopbar.vue'
+import OfflineBanner from './OfflineBanner.vue'
+import { useAuthStore } from '@/stores/auth.js'
 import { Offcanvas } from 'bootstrap'
+
+const auth = useAuthStore()
 
 function closeMobileMenu() {
   const el = document.getElementById('mobileSidebar')
