@@ -147,16 +147,18 @@ const todayLabel = new Date().toLocaleDateString('zh-TW', {
   year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
 })
 
+let cleanupRefresh = null
+
 onMounted(async () => {
   offlineStore.init()
+  cleanupRefresh = setupRefreshListener()
   await loadData()
   await markPendingTasks()
-  // 監聽同步完成後重整
-  const cleanup = setupRefreshListener()
-  onUnmounted(() => {
-    cleanup()
-    offlineStore.destroy()
-  })
+})
+
+onUnmounted(() => {
+  cleanupRefresh?.()
+  offlineStore.destroy()
 })
 
 /** 標記有待同步操作的任務 */
